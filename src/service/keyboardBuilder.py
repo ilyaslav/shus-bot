@@ -1,9 +1,10 @@
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, ReplyKeyboardMarkup
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from service.taskService import TaskService
 
 def getMainKeyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="Задать вопрос", callback_data="question")],
+            [InlineKeyboardButton(text="Задать вопрос", callback_data="question", url="https://t.me/shinshila_shus")],
             [InlineKeyboardButton(text="Выбрать и выпонить задание", callback_data="get_task")],
             [InlineKeyboardButton(text="Сдать задание", callback_data="submit_task")],
             [InlineKeyboardButton(text="Прокачать персонажа", callback_data="up_character")],
@@ -24,42 +25,26 @@ def getTaskLevelKeyboard():
             [InlineKeyboardButton(text="Простой", callback_data="easy")],
             [InlineKeyboardButton(text="Средний", callback_data="midle")],
             [InlineKeyboardButton(text="Сложный", callback_data="hard")],
-            [InlineKeyboardButton(text="Назад", callback_data="back_task_level")],
+            [InlineKeyboardButton(text="?", callback_data="?")],
+            [InlineKeyboardButton(text="Назад", callback_data="main")],
         ]
     )
 
-def getTaskKeyboard():
-    return InlineKeyboardMarkup(
-        inline_keyboard=[
-            [InlineKeyboardButton(text="question1", callback_data="question1")],
-            [InlineKeyboardButton(text="question2", callback_data="question2")],
-            [InlineKeyboardButton(text="question3", callback_data="question3")],
-            [InlineKeyboardButton(text="Назад", callback_data="back_task")],
-        ]
-    )
+async def getTaskKeyboard(level: str):
+    return await TaskService.getTaskKeyboard(level)
 
 def getTaskInfoKeyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="Главное меню", callback_data="main")],
-            [InlineKeyboardButton(text="Назад", callback_data="back_task_info")],
-        ]
-    )
-
-
-def getSendQuestionKeyboard():
-    return InlineKeyboardMarkup(
-        inline_keyboard=[
-            [InlineKeyboardButton(text="Назад", callback_data="back_send_question"),
-             InlineKeyboardButton(text="Главное меню", callback_data="main")],
+            [InlineKeyboardButton(text="Назад", callback_data="get_task")],
         ]
     )
 
 def getSubmitTaskKeyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="Главное меню", callback_data="main")],
-            [InlineKeyboardButton(text="Назад", callback_data="back_submit_task")],
+            [InlineKeyboardButton(text="Сдать задание", url="https://t.me/shinshila_shus")],
+            [InlineKeyboardButton(text="Назад", callback_data="main")],
         ]
     )
 
@@ -71,14 +56,13 @@ def getUpCharacterKeyboard():
             [InlineKeyboardButton(text="Прокачать личные качества", callback_data="speack")],
             [InlineKeyboardButton(text="Уложить спать", callback_data="sleep")],
             [InlineKeyboardButton(text="Сменить имя", callback_data="set_name")],
-            [InlineKeyboardButton(text="Назад", callback_data="back_up_chracter")],
+            [InlineKeyboardButton(text="Назад", callback_data="main")],
         ]
     )
 
 def getCharacterInfoKeyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="Главное меню", callback_data="main")],
-            [InlineKeyboardButton(text="Назад", callback_data="back_character_info")],
+            [InlineKeyboardButton(text="Назад", callback_data="main")],
         ]
     )

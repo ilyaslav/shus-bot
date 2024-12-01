@@ -11,14 +11,14 @@ class UserBase(Base):
     __tablename__ = "users"
 
     id: Mapped[str] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column()
+    name: Mapped[str] = mapped_column(nullable=True)
     rename_event: Mapped[bool] = mapped_column(default=1)
-    score: Mapped[int] = mapped_column(default=0)
+    score: Mapped[int] = mapped_column(default=3)
     feed: Mapped[int] = mapped_column(default=0)
     play: Mapped[int] = mapped_column(default=0)
     speak: Mapped[int] = mapped_column(default=0)
     sleep: Mapped[int] = mapped_column(default=0)
-    level: Mapped[int] = mapped_column(default=0)
+    level: Mapped[int] = mapped_column(default=1)
 
 
 class TaskBase(Base):
@@ -26,10 +26,12 @@ class TaskBase(Base):
 
     key_word: Mapped[str] = mapped_column(primary_key=True)
     reward: Mapped[int] = mapped_column(default=0)
+    text: Mapped[str] = mapped_column(nullable=False)
     type: Mapped[str] = mapped_column(nullable=False)
     button_name: Mapped[str] = mapped_column(nullable=False)
-    attachments: Mapped[str] = mapped_column()
-    date: Mapped[datetime.date] = mapped_column()
+    attachments: Mapped[str] = mapped_column(nullable=True)
+    attachment_type: Mapped[str] = mapped_column(nullable=True)
+    date: Mapped[datetime.date] = mapped_column(nullable=True)
 
 
 class UserTaskBase(Base):

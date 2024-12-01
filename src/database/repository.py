@@ -4,8 +4,13 @@ from sqlalchemy.future import select
 from sqlalchemy.sql.expression import update
 from sqlalchemy import or_
 
-from database import session_factory
-from models import *
+from database.database import session_factory
+from database.models import *
+
+INC = 3
+NEED_FEED = 3
+NEED_PALY = 3
+NEED_SLEEP = 1
 
 class Repository:
 
@@ -48,49 +53,67 @@ class Repository:
                 await sf.commit()
 
     @staticmethod
-    async def updateScore(inc: int):
+    async def updateScore():
         async with session_factory() as sf:
             await sf.execute(
                 update(UserBase)
-                .values(score = UserBase.score + inc)
+                .values(score = UserBase.score + INC)
             )
             await sf.commit()
 
     @staticmethod
-    async def updateFeed(inc: int):
+    async def updateFeed():
         async with session_factory() as sf:
             await sf.execute(
                 update(UserBase)
-                .values(feed = UserBase.feed + inc)
+                .values(feed = 0)
             )
             await sf.commit()
 
     @staticmethod
-    async def updatePlay(inc: int):
+    async def updatePlay():
         async with session_factory() as sf:
             await sf.execute(
                 update(UserBase)
-                .values(play = UserBase.play + inc)
+                .values(play = 0)
             )
             await sf.commit()
 
     @staticmethod
-    async def updateSpeak(inc: int):
+    async def updateSleep():
         async with session_factory() as sf:
             await sf.execute(
                 update(UserBase)
-                .values(speak = UserBase.speak + inc)
+                .values(sleep = 0)
             )
             await sf.commit()
 
     @staticmethod
-    async def updateSleep(inc: int):
+    async def checkFeed():
         async with session_factory() as sf:
             await sf.execute(
                 update(UserBase)
-                .values(sleep = UserBase.sleep + inc)
+                .values(score = UserBase.score - INC)
+                .filter(UserBase.feed < NEED_FEED)
             )
-            await sf.commit()
+
+    @staticmethod
+    async def checkPlay():
+        async with session_factory() as sf:
+            await sf.execute(
+                update(UserBase)
+                .values(score = UserBase.score - INC)
+                .filter(UserBase.play < NEED_PALY)
+            )
+
+    @staticmethod
+    async def checkSleep():
+        async with session_factory() as sf:
+            await sf.execute(
+                update(UserBase)
+                .values(score = UserBase.score - INC)
+                .filter(UserBase.sleep < NEED_SLEEP)
+            )
 
 
     @staticmethod
@@ -138,10 +161,10 @@ class Repository:
 
 
     @staticmethod
-    async def addUserTask(id: str, user_id: str, task_name: str, reward: int = 0):
+    async def addUserTask(user_id: str, key_word: str, reward: int = 0):
         user_task = UserTaskBase(
             user_id = user_id,
-            task_name = task_name,
+            key_word = key_word,
             reward = reward
         )
         async with session_factory() as sf:
