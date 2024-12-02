@@ -19,6 +19,7 @@ class UserBase(Base):
     speak: Mapped[int] = mapped_column(default=0)
     sleep: Mapped[int] = mapped_column(default=0)
     level: Mapped[int] = mapped_column(default=1)
+    upgrades: Mapped[int] = mapped_column(default=0)
 
 
 class TaskBase(Base):

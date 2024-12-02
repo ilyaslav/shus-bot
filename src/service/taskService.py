@@ -22,8 +22,10 @@ class TaskService:
         task = await Repository.getTaskById(key_word)
         text = task.text
         type = task.attachment_type
-        if type == "documents":
+        level = task.type
+        attachments = None
+        if type == "doc":
             attachments = AttachmentService.getDocuments(task.attachments)
-        else:
+        elif type == "img":
             attachments = AttachmentService.getMediagroup(task.attachments)
-        return text, type, attachments
+        return text, type, attachments, level

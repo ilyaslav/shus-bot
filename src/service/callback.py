@@ -11,7 +11,7 @@ from main import dp, bot
 async def callback_button(callback_query):
     id = str(callback_query.from_user.id)
     keyboard = getMainKeyboard()
-    await callback_query.message.answer_photo(photo="AgACAgIAAxkBAAIga2dMh6S8bOmj8HV0dDJONnlgAdp4AAJF5TEbJLdhSmn8fa-XWf3oAQADAgADeQADNgQ", reply_markup=keyboard)
+    await callback_query.message.answer_photo(photo="AgACAgIAAxkBAAMTZ00ccDeMf_BT4x6Lfq9PXLSsqtwAAi3gMRucNWhKCE-1xazOQrIBAAMCAAN5AAM2BA", reply_markup=keyboard)
 
 
 @dp.callback_query(F.data == "set_name")
@@ -120,12 +120,14 @@ async def callback_button(callback_query):
 
 @dp.callback_query(F.data)
 async def callback_button(callback_query):
-    text, type, attachments = await TaskService.getTask(callback_query.data)
-    keyboard = getTaskInfoKeyboard()
+    text, type, attachments , level = await TaskService.getTask(callback_query.data)
+    keyboard = getTaskInfoKeyboard(level)
     if type == "img":
         await callback_query.message.answer_media_group(attachments)
         await callback_query.message.answer(text, reply_markup=keyboard)
     elif type == "doc":
         await callback_query.message.answer(text, reply_markup=keyboard)
         for doc in attachments:
-            await callback_query.message.answer_document(document=doc, reply_markup=keyboard)
+            await callback_query.message.answer_document(document=doc)
+    else:
+        await callback_query.message.answer(text, reply_markup=keyboard)

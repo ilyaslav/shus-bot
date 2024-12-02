@@ -50,6 +50,7 @@ class Repository:
                 db_user.speak = user.speak
                 db_user.sleep = user.sleep
                 db_user.level = user.level
+                db_user.upgrades = user.upgrades
                 await sf.commit()
 
     @staticmethod
@@ -187,4 +188,4 @@ class Repository:
                 .filter(UserTaskBase.user_id == user_id)
                 .filter(UserTaskBase.key_word == key_word)
             )
-            return user_task.scalars().one()
+            return user_task.scalars().all()

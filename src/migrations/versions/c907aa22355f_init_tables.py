@@ -1,7 +1,7 @@
-"""empty message
+"""init tables
 
 Revision ID: c907aa22355f
-Revises: 
+Revises:
 Create Date: 2024-11-30 14:19:51.805396
 
 """

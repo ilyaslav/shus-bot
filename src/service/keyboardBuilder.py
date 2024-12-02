@@ -33,10 +33,10 @@ def getTaskLevelKeyboard():
 async def getTaskKeyboard(level: str):
     return await TaskService.getTaskKeyboard(level)
 
-def getTaskInfoKeyboard():
+def getTaskInfoKeyboard(level: str):
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="Назад", callback_data="get_task")],
+            [InlineKeyboardButton(text="Назад", callback_data=level)],
         ]
     )
 

@@ -17,7 +17,7 @@ class UserService:
 
         if not bool(await Repository.getUserTaskByKeyWordAndUserId(key_word, user.id)):
             await Repository.addUserTask(user.id, key_word, int(reward))
-            user.score += reward
+            user.score += int(reward)
             await Repository.updateUser(user)
             return "Код принят"
         else:
@@ -35,12 +35,23 @@ class UserService:
         await Repository.updateUser(user)
 
     @staticmethod
+    def checkLevel(user: UserBase) -> int:
+        levels = [0, 6, 12, 24, 60, 100, 160, 240, 370, 500]
+        i = 0
+        for level in levels:
+            if user.upgrades >= level:
+                i+=1
+        return i
+
+    @staticmethod
     async def feed(user: UserBase) -> str:
         if user.feed == MAX_FEED:
             return "Ваш персонаж сыт!"
         if user.score > user.feed:
             user.feed += 1
             user.score -= user.feed
+            user.upgrades += user.feed
+            user.level = UserService.checkLevel(user)
             await Repository.updateUser(user)
             return "«Спасибо, большое! Было очень вкусно!»"
         return "Не хватает баллов для выполнения действия"
@@ -52,6 +63,8 @@ class UserService:
         if user.score > user.play:
             user.play += 1
             user.score -= user.play
+            user.upgrades += user.play
+            user.level = UserService.checkLevel(user)
             await Repository.updateUser(user)
             return "Уровень счастья увеличился"
         return "Не хватает баллов для выполнения действия"
@@ -63,6 +76,8 @@ class UserService:
         if user.score > user.sleep:
             user.sleep += 1
             user.score -= user.sleep
+            user.upgrades += user.sleep
+            user.level = UserService.checkLevel(user)
             await Repository.updateUser(user)
             return "Ваш активист уснул"
         return "Не хватает баллов для выполнения действия"
@@ -72,6 +87,8 @@ class UserService:
         if user.score > SPEAK_COST:
             user.speak += 1
             user.score -= SPEAK_COST
+            user.upgrades += SPEAK_COST
+            user.level = UserService.checkLevel(user)
             await Repository.updateUser(user)
             return "Личные качества активист успешно прокачены!"
         return "Не хватает баллов для выполнения действия"
@@ -102,11 +119,11 @@ class UserService:
 
         text = """Данные персонажа {name}:
 
-Уровень: {level}
-Сытость: {feed}
-Счастье: {play}
-Личные качества: {speak}
-Бодрость: {sleep}""".format(
+<b>Уровень:</b> {level}
+<b>Сытость:</b> {feed}
+<b>Счастье:</b> {play}
+<b>Личные качества:</b> {speak}
+<b>Бодрость:</b> {sleep}""".format(
     name=user.name,
     level=user.level,
     feed=user.feed,
