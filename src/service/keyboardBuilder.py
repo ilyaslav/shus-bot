@@ -5,7 +5,7 @@ def getMainKeyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [InlineKeyboardButton(text="Задать вопрос", callback_data="question", url="https://t.me/shinshila_shus")],
-            [InlineKeyboardButton(text="Выбрать и выпонить задание", callback_data="get_task")],
+            [InlineKeyboardButton(text="Выбрать и выполнить задание", callback_data="get_task")],
             [InlineKeyboardButton(text="Сдать задание", callback_data="submit_task")],
             [InlineKeyboardButton(text="Прокачать персонажа", callback_data="up_character")],
             [InlineKeyboardButton(text="Оценить состояние персонажа", callback_data="character_info")]

@@ -46,7 +46,7 @@ class UserService:
     @staticmethod
     async def feed(user: UserBase) -> str:
         if user.feed == MAX_FEED:
-            return "Ваш персонаж сыт!"
+            return "Ваш активист сыт!"
         if user.score > user.feed:
             user.feed += 1
             user.score -= user.feed
@@ -59,7 +59,7 @@ class UserService:
     @staticmethod
     async def play(user: UserBase) -> str:
         if user.play == MAX_PLAY:
-            return "Ваш персонаж сыт!"
+            return "Ваш активист устал и пока не хочет играть!"
         if user.score > user.play:
             user.play += 1
             user.score -= user.play
@@ -72,7 +72,7 @@ class UserService:
     @staticmethod
     async def sleep(user: UserBase) -> str:
         if user.sleep == MAX_SLEEP:
-            return "Ваш персонаж сыт!"
+            return "Ваш активист пока не хочет спать!"
         if user.score > user.sleep:
             user.sleep += 1
             user.score -= user.sleep
